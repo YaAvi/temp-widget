@@ -1,8 +1,5 @@
 #node
 node_modules/
 
-#lib
-lib/
-
 #server
 server/
