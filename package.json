@@ -7,7 +7,7 @@
     "build": "babel js -d lib --presets react",
     "start": "watchify js/app.js -o lib/app.js"
   },
-  "author": "avi",
+  "author": "Avi Yaakov",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.18.0",
