@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel js -d lib --presets react",
-    "start": "watchify js/app.js -o lib/app.js"
+    "start": "watchify js/app.js -o lib/app.js",
+    "server": "node server/server.js"
   },
   "author": "Avi Yaakov",
   "license": "ISC",
@@ -17,8 +17,8 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "flux": "^3.1.0",
     "hammerjs": "^2.0.8",
+    "howler": "^2.0.1",
     "react": "^15.4.0",
     "react-dom": "^15.4.0"
   },

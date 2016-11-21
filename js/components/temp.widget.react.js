@@ -1,4 +1,5 @@
 var React = require('react');
+var Howl = require('howler').Howl;
 
 var Temp = require('./temp.react');
 var TempUpButton = require('./tempUpButton.react');
@@ -12,6 +13,11 @@ var TempWidget = React.createClass({
 		max: React.PropTypes.number.isRequired
 	},
 
+	tickSound: new Howl({
+      src: ['sound/tick.mp3'],
+      volume: 0.1
+    }),
+
 	getInitialState: function() {
 		return {
 			temp: this.props.temperatureSetPoint,
@@ -21,12 +27,14 @@ var TempWidget = React.createClass({
 	inc: function() {
 		if (this.state.temp < this.props.max) {
 			this.setState({temp: this.state.temp + 1});
+			this.tickSound.play();
 		}
 	},
 
 	dec: function() {
 		if (this.state.temp > this.props.min) {
 			this.setState({temp: this.state.temp - 1});
+			this.tickSound.play();
 		}
 	},
 

@@ -29,7 +29,8 @@ var Temp = React.createClass({
 
 	calcIntervalDelay: function(distance, velocity) {
 		var delay = Math.abs(distance / velocity);
-		return delay != Infinity ? delay : 50;
+		console.log(delay);
+		return delay != Infinity && delay > 70 ? delay : 70;
 	},
 
 	onSwipe: function(ev, changeTemp) {
@@ -54,27 +55,27 @@ var Temp = React.createClass({
 
 
 	onPinchStart: function(ev) {
-		this.counter = 0;
+		this.lastDist = ev.distance;
 		this.lastScale = ev.scale;
 		this.hammer.get('swipe').set({ enable: false });
   		this.hammer.get('pan').set({ enable: false });
 	},
 
 	onPinchMove: function(ev) {
-		if (this.lastScale != ev.scale) {
-			if(this.lastScale < ev.scale && this.counter % 10 === 0) {
-				this.props.inc();
-			}
-			if(this.lastScale > ev.scale && this.counter % 10 === 0) {
-				this.props.dec();
-			}
+		if(this.lastScale < ev.scale && Math.abs(this.lastDist - ev.distance) > 4) {
+			this.props.inc();
 			this.lastScale = ev.scale;
-			this.counter++;
+			this.lastDist = ev.distance;
+		}
+
+		if(this.lastScale > ev.scale && Math.abs(this.lastDist - ev.distance) > 4) {
+			this.props.dec();
+			this.lastScale = ev.scale;
+			this.lastDist = ev.distance;
 		}
 	},
 
 	onPinchEnd: function(ev) {
-		this.counter = 0;
 		this.hammer.get('swipe').set({ enable: true });
   		this.hammer.get('pan').set({ enable: true });
 	},
