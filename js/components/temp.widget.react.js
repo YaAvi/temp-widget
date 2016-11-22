@@ -2,8 +2,7 @@ var React = require('react');
 var Howl = require('howler').Howl;
 
 var Temp = require('./temp.react');
-var TempUpButton = require('./tempUpButton.react');
-var TempDownButton = require('./tempDownButton.react');
+var TempButton = require('./tempButton.react');
 
 var TempWidget = React.createClass({
 	propTypes: {
@@ -20,8 +19,16 @@ var TempWidget = React.createClass({
 
 	getInitialState: function() {
 		return {
-			temp: this.props.temperatureSetPoint,
+			temp: this.props.temperatureSetPoint
 		};
+	},
+
+	componentWillReceiveProps: function(nextProps) {
+		if (this.state.temp != nextProps.temperatureSetPoint) {
+			this.setState({
+				temp: this.props.temperatureSetPoint
+			});
+		}
 	},
 
 	inc: function() {
@@ -62,9 +69,9 @@ var TempWidget = React.createClass({
 		};
 		return (
 			<div className="container" style={widgetStyle}>
-				<TempUpButton inc={this.inc} style={this.hideUpBtn()} />
+				<TempButton onClick={this.inc} disabled={this.state.temp >= this.props.max} icon="keyboard_arrow_up"/>
 				<Temp temp={this.state.temp} unitName={this.props.unitName} inc={this.inc} dec={this.dec}/>
-				<TempDownButton dec={this.dec} style={this.hideDownBtn()} />
+				<TempButton onClick={this.dec} disabled={this.state.temp <= this.props.min} icon="keyboard_arrow_down"/>
 			</div>
 		);
 

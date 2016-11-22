@@ -73,6 +73,11 @@ button:focus
     background: none;
 }
 
+.temp-button[disabled]
+{
+    visibility: hidden;
+}
+
 .temp-button:active
 {
     color: grey;

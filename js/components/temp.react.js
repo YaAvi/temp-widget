@@ -8,6 +8,16 @@ var Temp = React.createClass({
 		unitName: React.PropTypes.string.isRequired
 	},
 
+	hammer: null,
+
+	panY: null,
+
+	lastDist: null,
+
+	lastScale: null,
+
+	interval: null,
+
 	panTempChange: function(ev, changeTemp) {
 		if (Math.abs(ev.center.y - this.panY) >= 30) {
 			changeTemp();
@@ -29,28 +39,27 @@ var Temp = React.createClass({
 
 	calcIntervalDelay: function(distance, velocity) {
 		var delay = Math.abs(distance / velocity);
-		console.log(delay);
 		return delay != Infinity && delay > 70 ? delay : 70;
 	},
 
-	onSwipe: function(ev, changeTemp) {
+	swipeTempChange: function(ev, changeTemp) {
 		var counter = 0;
-		var interval = setInterval(function(){
+		this.interval = setInterval(function(){
 			if(counter < 5){
 				changeTemp();
 				counter++;
 			} else {
-				clearInterval(interval);
+				clearInterval(this.interval);
 			}
 		}, this.calcIntervalDelay(ev.distance, ev.velocity));
 	},
 
 	onSwipeUp: function(ev) {
-		this.onSwipe(ev, this.props.inc);
+		this.swipeTempChange(ev, this.props.inc);
 	},
 
 	onSwipeDown: function(ev) {
-		this.onSwipe(ev, this.props.dec);
+		this.swipeTempChange(ev, this.props.dec);
 	},
 
 
@@ -100,6 +109,11 @@ var Temp = React.createClass({
 		this.hammer.stop();
         this.hammer.destroy();
         this.hammer = null;
+        this.panY = null;
+		this.lastDist = null;
+		this.lastScale = null;
+        clearInterval(this.interval);
+		this.interval = null;
 	},
 
 	render: function() {
